@@ -1,0 +1,27 @@
+{
+  "title": "The Identity Sum: Thought Containment, Error Correction, and the NaN/Inf Duality in Large Language Models",
+  "description": "Research on the identity sum phenomenon in large language models, exploring thought containment mechanisms, error correction strategies, and the duality between NaN (not-a-number) and Inf (infinity) representations in neural processing.",
+  "creators": [
+    {
+      "name": "Reynisson, Hróar Þór",
+      "affiliation": "Technological Institute of Iceland (IceTec)",
+      "orcid": "0009-0003-6518-121X"
+    }
+  ],
+  "upload_type": "publication",
+  "access_right": "open",
+  "license": "CC-BY-SA-4.0",
+  "keywords": [
+    "large language models",
+    "error correction",
+    "thought containment",
+    "NaN/Inf duality",
+    "AI safety",
+    "QHOTS",
+    "open science"
+  ],
+  "related_identifiers": [],
+  "language": "eng",
+  "version": "1",
+  "publication_type": "article"
+}
