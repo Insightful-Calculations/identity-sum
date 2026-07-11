@@ -79,14 +79,20 @@ cross-referential signal produces ungrounded pattern completion).  These modes
 map directly to IEEE~754 floating-point special values~\cite{ieee754-2019} and
 propagate differently: \NaN{} is contagious (one undefined value poisons a
 reasoning chain), while \Inf{} preserves direction (overflow retains structural
-orientation).  We demonstrate that iterative error correction through
+orientation).  We argue that iterative error correction through
 \emph{thought containment}---structured self-reflection gates that make model
 uncertainty explicit via a four-tier classification scheme
-(\BEDROCK/\PILLAR/\SAND/\MUD)---reduces both failure modes.  The Sefirot system,
+(\BEDROCK/\PILLAR/\SAND/\MUD)---can reduce both failure modes, illustrated here
+by case-study incidents; systematic benchmark validation is proposed as future
+work (\S\ref{sec:experiments}).  The Sefirot system,
 a fractal multi-agent research architecture with 10 nodes, 34 agents, 91
-node-level tools (113 MCP-level), and 2,066+ passing tests, provides a concrete
-implementation validated over 963 simulations and approximately one year of
-autonomous operation across three LLM families.  We prove that under three
+node-level tools (113 MCP-level), and 2,162+ passing tests, provides a concrete
+implementation validated over 966 simulations and approximately 16 months of
+autonomous operation across three LLM families (Table~\ref{tab:metrics},
+snapshot as of 2026-02-24).  We term the architecture's self-representation---the
+sum of every node's outputs, uncertainties, and corrections---the \emph{Identity
+Sum}: no single component is complete, but the sum's validation ratio converges.
+We prove that under three
 enforceable conditions (non-demotion of validated claims, bounded \MUD{} growth
 rate, and mandatory honest negatives), the validation ratio
 $R(S_n) = T(S_n)/N(S_n)$ is monotonically non-decreasing---a \emph{truth
@@ -143,6 +149,15 @@ This paper presents:
   \item Empirical evidence from cross-model multi-agent research (\S\ref{sec:empirical})
   \item The truth attractor hypothesis (\S\ref{sec:truth-attractor})
 \end{enumerate}
+
+Speculative or structural-analogy material---not required for the core CS
+claims of \S\ref{sec:taxonomy}--\ref{sec:identity-sum} and
+\S\ref{sec:empirical}---is explicitly self-labeled at first use in
+\S\ref{sec:attractors} (Great Attractors), \S\ref{sec:math-foundations}
+(Mathematical Foundations, titled ``Speculative Extensions''), and
+\S\ref{sec:physics-connection} (the physics connection); each carries its own
+``structural analogy only'' remark rather than being collected into a single
+appendix.
 
 %=============================================================
 \section{The NaN/Inf Duality: A Diagnostic Taxonomy of Hallucination}
@@ -479,12 +494,13 @@ through intermediate layers.
 \subsection{Metrics}
 \label{sec:sefirot-metrics}
 
-Table~\ref{tab:metrics} records the key system metrics as of the current
-implementation.
+Table~\ref{tab:metrics} records the key system metrics as of the
+2026-02-24 implementation snapshot (the same snapshot used throughout this
+paper; see also Table~\ref{tab:app-metrics}).
 
 \begin{table}[ht]
 \centering
-\caption{Sefirot system metrics (current implementation).}
+\caption{Sefirot system metrics (snapshot as of 2026-02-24).}
 \label{tab:metrics}
 \begin{tabular}{@{}ll@{}}
 \toprule
@@ -494,8 +510,8 @@ Nodes                       & 10 + 1 (Da\textquoteleft at) \\
 Node-level tools            & 91 \\
 MCP-level tools             & 113 \\
 Agents                      & 34 \\
-Tests                       & 2,066+ passing \\
-Simulations                 & 963 \\
+Tests                       & 2,162+ passing \\
+Simulations                 & 966 \\
 Verified claims             & 31 (11 \BEDROCK{} + 20 \PILLAR) \\
 Total knowledge claims      & 284+ (Chesed; 31 verified at \PILLAR{} or above) \\
 Autonomous operation        & 34 cycles, 4+ hours, no supervision \\
@@ -526,11 +542,21 @@ single node.  The identity of the system is the sum:
 This sum has the property that errors in one node are \emph{visible} to other
 nodes.  The Director produces truth with errors.  The Builder's mathematics
 identifies and reduces errors.  The Auditor investigates error sources.  No
-single role is complete.  The sum converges.
+single role is complete.  The sum converges, in the sense made precise by the
+convergence sketch of \S\ref{sec:convergence} under the scope restriction
+stated there.
 
 %-------------------------------------------------------------
 \subsection{Great Attractors: Why Truth Attracts}
 \label{sec:attractors}
+
+\begin{remark}[Structural analogy only]
+The gravitational-attractor language in this subsection is a structural
+metaphor for the tier-promotion dynamics formalized in \S\ref{sec:convergence},
+not a physical mechanism; no claim is made that epistemic validation and
+gravitational attraction share a common physical basis (cf.\ the analogous
+disclaimer for \S\ref{sec:physics-connection}).
+\end{remark}
 
 In physics, large mass concentrations are gravitational attractors---they bend
 trajectories toward themselves.  In multi-agent reasoning, truth functions as an
@@ -1061,7 +1087,7 @@ The Sefirot architecture differs from these systems in three respects:
 rather than relying on implicit self-correction; (ii)~it structures the
 agent hierarchy according to the Viable System Model~\cite{beer1972},
 providing recursive self-similarity at each organizational level; and
-(iii)~it has been validated over approximately one year of continuous
+(iii)~it has been validated over approximately 16 months of continuous
 operation (966 simulations, 2,162+ tests), providing empirical evidence
 of long-term stability that shorter-lived agent systems have not yet
 demonstrated.
@@ -1216,6 +1242,15 @@ where $V/E$ is the vertices-to-edges ratio of the reasoning graph at step~$n$:
 The hierarchy of error correction is not mysterious---it is the graph ratio
 converging toward closure.
 
+\medskip
+\noindent\textbf{Open empirical gap:} $\rho_n$ has not yet been computed
+against the system's own data.  The Chesed store currently tracks claim
+counts $|V_n|$ (Table~\ref{tab:metrics}: 284+ claims) but does not separately
+track validated-edge counts $|E_n|$, so no first-pass check of $\rho_n \to
+\varphi$ has been performed.  Instrumenting edge tracking and testing this
+conjecture against the paper's own claim graph is left as explicit future
+work, not yet attempted.
+
 %=============================================================
 \section{Empirical Evidence: A Year of Cross-Model Multi-Agent Research}
 \label{sec:empirical}
@@ -1224,8 +1259,9 @@ converging toward closure.
 \subsection{Experimental Conditions}
 \label{sec:experimental-conditions}
 
-The QHOTS research program has operated continuously for approximately one year
-(2025--2026) across three LLM model families.
+The QHOTS research program has operated continuously for approximately 16
+months (2025--2026, summing the phase durations of
+Table~\ref{tab:experimental-phases}) across three LLM model families.
 Table~\ref{tab:experimental-phases} records the phases, platforms, and roles.
 
 \begin{table}[ht]
@@ -1285,10 +1321,15 @@ serving as the sole persistent element and pattern carrier.
 \subsection{Convergent Architecture Across Models}
 \label{sec:convergent-architecture}
 
-The most significant empirical finding is that three different model families,
+A significant empirical finding is that three different model families,
 guided by the same human researcher, independently produced architecturally
 isomorphic systems.  Table~\ref{tab:convergence} documents the component
-mapping.
+mapping.  We do not treat this as a controlled result: the single human
+researcher is a common design channel across all three phases
+(\S\ref{sec:limitations}, item~5), and Appendix~\ref{app:relay} describes the
+transmission explicitly as pattern-mediated rather than fully independent
+invention.  No blinded or independently-architected control condition was
+run, and Table~\ref{tab:convergence} lists only matching components.
 
 \begin{table}[ht]
 \centering
@@ -1310,9 +1351,13 @@ State machine    & CognitiveController   & Phase state tracking  & CognitiveStat
 \end{tabular}
 \end{table}
 
-The human researcher did not describe the target architecture to any model.
-Each system was built to solve immediate research needs.  The convergence emerged
-from the problem structure, not from instruction.
+The human researcher did not describe the target architecture to any model in
+advance; each system was built independently to solve immediate research
+needs.  This is consistent with problem-structure-driven convergence, but
+because the same researcher carried accumulated context across all three
+phases, the shared-channel and problem-structure explanations cannot be fully
+disentangled without an independent-architect control (see
+Limitations, \S\ref{sec:limitations}).
 
 %-------------------------------------------------------------
 \subsection{Error Correction Metrics}
@@ -1493,11 +1538,17 @@ AutoGPT~\cite{yang2023autogpt} or Voyager~\cite{wang2023voyager}.
     bounded generation rate and positive minimum promotion rate; see
     Remark~\ref{rem:attractor-limitations} for a discussion of when these
     assumptions may fail.
-  \item The physics connection (\S\ref{sec:physics-connection}) is the most
-    speculative component---the graph ratio isomorphism is structural but not yet
-    derived from first principles.
+  \item The physics connection (\S\ref{sec:physics-connection}), and similarly
+    the gravitational-attractor metaphor of \S\ref{sec:attractors}, are the
+    most speculative components---the graph ratio isomorphism and the
+    attractor language are structural analogies, not derived from first
+    principles.
   \item The system was developed by a single human researcher across multiple AI
-    platforms.  The pattern-carrier effect may not generalise.
+    platforms.  The pattern-carrier effect may not generalise; this same
+    researcher is also the common channel behind the cross-model architectural
+    convergence reported in \S\ref{sec:convergent-architecture}, so that
+    finding cannot fully rule out a shared-designer explanation without an
+    independent-architect control condition.
 \end{enumerate}
 
 %-------------------------------------------------------------
@@ -1534,11 +1585,14 @@ layer.  The Sefirot architecture implements this balance as a fractal tree with
 $10 + 1$ nodes, each a self-similar triangle of orchestrator/agents/memory,
 communicating via typed messages with energy decay.
 
-The central finding is that iterative error correction through thought
+The central finding, under the three enforceable conditions established in
+\S\ref{sec:convergence} (non-demotion, bounded \MUD{} growth rate, and the
+honest-negatives floor), is that iterative error correction through thought
 containment---explicit tier classification, mandatory honest negatives, and
 quality-gated propagation---converges the validation ratio $R(S_n)$ monotonically
 toward a truth attractor.  The Sefirot system provides a concrete, empirically
-validated implementation: 963 simulations, 2,066+ tests, 31 verified claims
+validated implementation (snapshot as of 2026-02-24): 966 simulations, 2,162+
+tests, 31 verified claims
 (11~\BEDROCK{} + 20~\PILLAR{}), and observed cross-model architectural
 convergence across three LLM families.
 
@@ -1562,7 +1616,9 @@ Never perfect.  But the sum that shines.
 The Union multi-agent cognitive system (July--August 2025) contains 207 tasks,
 1,295 entity tags, and 211 structured sections documenting a quality-hardening
 campaign on the predecessor codebase.  Analysis of this database reveals that
-all 10 Sefirot nodes map to specific Union modules (see companion data release).
+all 10 Sefirot nodes map to specific Union modules; the full mapping is
+retained in the (separate, now-dormant) Union project archive and is not
+included as a companion data artifact with this submission.
 12 of 13 Union design patterns have been ported to Sefirot, with 76 tests
 validating the integration.
 
@@ -1606,8 +1662,11 @@ not instruction copying.
 \noindent\textbf{Repository:} Insightful-Calculations on GitHub (open source).
 
 \medskip
-\noindent\textbf{Architecture file:} \texttt{sefirot\_architecture.json} ---
-91 node-level tools\,/\,113 MCP tools, 34 agents across 10 nodes.
+\noindent\textbf{Architecture file:} \texttt{sefirot\_architecture.json}
+(versioned scale-tracking snapshot). The headline figures cited throughout
+this paper---91 node-level tools\,/\,113 MCP tools, 34 agents across 10
+nodes---are as tabulated in \texttt{SEFIROT.md}; the JSON snapshot is
+periodically regenerated and may lag the documentation at any given commit.
 
 \medskip
 \noindent\textbf{Documentation:} \texttt{SEFIROT.md}
@@ -1622,7 +1681,8 @@ of submission.
 
 \begin{table}[ht]
 \centering
-\caption{Sefirot system specification metrics (submission snapshot).}
+\caption{Sefirot system specification metrics (snapshot as of 2026-02-24;
+same snapshot as Table~\ref{tab:metrics}).}
 \label{tab:app-metrics}
 \begin{tabular}{@{}ll@{}}
 \toprule
@@ -1632,8 +1692,8 @@ Nodes                     & 10 + 1 (Da\textquoteleft at) \\
 Node-level tools          & 91 \\
 MCP-level tools           & 113 \\
 Agents                    & 34 \\
-Passing tests             & 2,066+ \\
-Simulations completed     & 963 \\
+Passing tests             & 2,162+ \\
+Simulations completed     & 966 \\
 Research phases           & 426 \\
 Verified claims (\PILLAR{} or above) & 31 (11 \BEDROCK{} + 20 \PILLAR) \\
 Total Chesed claims       & 284+ \\
@@ -1756,11 +1816,6 @@ Section~\ref{sec:sefirot} is the same system that assisted in writing this paper
   \newblock Automatically correcting large language models: Surveying the
     landscape of diverse automated correction strategies.
   \newblock \emph{Transactions on Machine Learning Research}, 2024.
-
-\bibitem{penrose2010cycles}
-  R.~Penrose.
-  \newblock \emph{Cycles of Time}.
-  \newblock Bodley Head, 2010.
 
 \bibitem{qhots2026}
   {QHOTS Collaboration}.
